@@ -1,41 +1,44 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.*;
+import java.util.*;
 
 
 public class Main {
 
-  // написать базу данных студентов
-  // студенты могут находиться в группах
-
-  // красиво вывести состав групп на экран
   public static void main(String[] args) throws IOException {
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    List<Student> students = new ArrayList<>();
-    // прочитать количество групп
-    int groups = Integer.parseInt(br.readLine());
+    Map<String, List<Student>> mapStudent = new HashMap<>();
+    File inputFile = new File("res/input.txt");
+    BufferedReader fr = new BufferedReader(new FileReader(inputFile));
+    int groups = Integer.parseInt(fr.readLine());
     for (int groupId = 0; groupId < groups; ++groupId) {
-      // для каждой группы:
-      readGroup(br, students);
+      readGroup(fr, mapStudent);
     }
-    for (Student student : students) {
-      System.out.printf("%s (%s) в группе %s%n", student.getName(), student.getEMail(),
-          student.getGroup());
+    fr.close();
+
+    for (Map.Entry groupList : mapStudent.entrySet()) {
+      String groupName = "" + groupList.getKey();
+      System.out.println("\nGroup name: " + groupName);
+      System.out.println("Students:");
+      List<Student> students = new ArrayList<>(mapStudent.get(groupName));
+      for (Student student : students) {
+        System.out.printf("%s, %s%n", student.getName(),
+            student.getEMail() == null ? "no eMail" : student.getEMail());
+      }
     }
   }
 
   // - прочитать название группы
   // - прочитать количество студентов
   // - прочитать информацию о студентах - "имя" или "имя,e-mail" для каждого в отдельной строке
-  private static void readGroup(BufferedReader br, List<Student> students) throws IOException {
-    String groupName = br.readLine();
-    int studentsNumber = Integer.parseInt(br.readLine());
+  private static void readGroup(BufferedReader fr, Map<String, List<Student>> mapStudent) throws IOException {
+    String groupName = fr.readLine();
+    if (!mapStudent.containsKey(groupName)) {
+      mapStudent.put(groupName, new ArrayList<>());
+    }
+    int studentsNumber = Integer.parseInt(fr.readLine());
     for (int i = 0; i < studentsNumber; ++i) {
-      String line = br.readLine();
+      String line = fr.readLine();
       Student student = Student.parseStudent(groupName, line);
-      students.add(student);
+      mapStudent.get(groupName).add(student);
     }
   }
 }

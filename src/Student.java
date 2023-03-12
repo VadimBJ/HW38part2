@@ -24,8 +24,7 @@ public class Student {
   }
 
   public Student(String name, String group, String eMail) {
-    ++counter;
-    this.id = counter;
+    this.id = ++counter;
     this.name = name;
     this.group = group;
     this.eMail = eMail;

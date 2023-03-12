@@ -1,0 +1,17 @@
+3
+cohort24
+3
+Kirill,kirill@k.com
+Misha,mike@m.com
+Vova
+cohort23
+3
+Masha,Maria@g.com
+Vasiliy
+Vera
+cohort22
+4
+Nikola,nike@m.com
+Natali
+Toma
+Terry
